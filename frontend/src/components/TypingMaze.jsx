@@ -37,41 +37,58 @@ const getRandomPosition = (existingPositions, maxWidth, maxHeight) => {
 
 const TypingMaze = () => {
   const [mazeWords, setMazeWords] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentSentenceIndex, setCurrentSentenceIndex] = useState(0);
   const [typedWord, setTypedWord] = useState("");
   const [gameStarted, setGameStarted] = useState(false);
   const [gameOver, setGameOver] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(120);
+  const [score, setScore] = useState(0);
   const gameRef = useRef(null);
+  let sentenceOrder = [];
 
   useEffect(() => {
     if (gameStarted) {
       gameRef.current.focus();
       let selectedSentences = allSentences.sort(() => 0.5 - Math.random()).slice(0, 6);
+      sentenceOrder = selectedSentences.map((sentence, index) => ({ sentence, order: index + 1 }));
       let scatteredWords = [];
       let firstWords = new Set();
+
       selectedSentences.forEach((sentence) => {
         let splitWords = splitSentence(sentence);
         scatteredWords = [...scatteredWords, ...splitWords];
         firstWords.add(splitWords[0]);
       });
+
       let positions = [];
-      scatteredWords = scatteredWords.map((word) => {
+      scatteredWords = scatteredWords.map((word, index) => {
         const position = getRandomPosition(positions, window.innerWidth, window.innerHeight);
         positions.push(position);
-        return { word, ...position, isFirst: firstWords.has(word) };
+        return { word, ...position, isFirst: firstWords.has(word), order: sentenceOrder.find(s => s.sentence.includes(word))?.order };
       });
       setMazeWords(scatteredWords);
     }
   }, [gameStarted]);
 
+  useEffect(() => {
+    if (gameStarted && timeLeft > 0) {
+      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
+      return () => clearTimeout(timer);
+    } else if (timeLeft === 0) {
+      setGameOver(true);
+      setGameStarted(false);
+    }
+  }, [timeLeft, gameStarted]);
+
   const handleInputChange = (e) => {
     setTypedWord(e.target.value);
-    if (e.target.value === mazeWords[currentIndex].word) {
-      if (currentIndex === mazeWords.length - 1) {
+    if (e.target.value === mazeWords[currentSentenceIndex].word) {
+      setScore(score + 10);
+      if (currentSentenceIndex === mazeWords.length - 1) {
         setGameOver(true);
         setGameStarted(false);
       } else {
-        setCurrentIndex((prev) => prev + 1);
+        setCurrentSentenceIndex((prev) => prev + 1);
         setTypedWord("");
       }
     }
@@ -93,13 +110,15 @@ const TypingMaze = () => {
       {!gameStarted ? (
         <div className="max-w-2xl text-center p-6 bg-black bg-opacity-50 rounded-lg shadow-lg">
           <h1 className="text-4xl font-extrabold mb-4">Typing Maze Challenge</h1>
-          <p className="text-lg mb-6">Find and type 6 hidden sentences in the maze. Each sentence is split into parts and scattered randomly. Only the first word of each sentence will be highlighted. You must find and complete each sentence in the correct order!</p>
+          <p className="text-lg mb-6">Find and type 6 hidden sentences in the maze. Each sentence is split into parts and scattered randomly. The first part of each sentence will be highlighted along with its order number.</p>
           <button
             onClick={() => {
               setGameStarted(true);
               setGameOver(false);
-              setCurrentIndex(0);
+              setCurrentSentenceIndex(0);
               setTypedWord("");
+              setTimeLeft(120);
+              setScore(0);
             }}
             className="px-8 py-3 bg-green-500 text-white text-lg rounded-lg shadow-lg hover:bg-green-600 transition"
           >
@@ -109,17 +128,15 @@ const TypingMaze = () => {
       ) : (
         <>
           <div className="absolute top-4 right-4 text-4xl font-bold text-yellow-500">
-            Progress: {currentIndex + 1}/{mazeWords.length}
+            Time Left: {timeLeft}s | Score: {score}
           </div>
           {mazeWords.map((item, index) => (
             <div
               key={index}
-              className={`absolute text-lg font-bold p-4 rounded-lg shadow-lg ${
-                item.isFirst ? "bg-yellow-400 text-black" : "bg-gray-800 text-gray-300"
-              }`}
+              className={`absolute text-lg font-bold p-4 rounded-lg shadow-lg ${item.isFirst ? "bg-yellow-400 text-black" : "bg-gray-800 text-gray-300"}`}
               style={{ left: `${item.x}px`, top: `${item.y}px` }}
             >
-              {item.word}
+              {item.isFirst ? `${item.order}. ${item.word}` : item.word}
             </div>
           ))}
           <input

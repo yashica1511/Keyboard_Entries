@@ -11,7 +11,7 @@ const LandingPage = () => {
               }}
           >
               {/* Header */}
-              <header className="w-full px-6 py-5 flex justify-between items-center bg-black bg-opacity-40 backdrop-blur-md rounded-lg shadow-lg">
+              <header className="w-full fixed top-0 left-0 flex justify-between items-center bg-black bg-opacity-50 p-4 shadow-lg z-50">
                   <div className="text-2xl font-bold text-white">Typing Test</div>
                   <nav className="flex space-x-4">
                       <a href="/login" className="px-4 py-2 bg-white text-gray-900 font-semibold rounded-lg shadow-md hover:bg-gray-200 transition-all">
@@ -25,7 +25,7 @@ const LandingPage = () => {
 
               {/* Main Section */}
               <main className="text-center flex flex-col items-center px-6">
-                  <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6">
+                  <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6 mt-6">
                       Enhance Your Typing Skills
                   </h1>
                   <p className="text-lg sm:text-xl md:text-2xl mb-8">

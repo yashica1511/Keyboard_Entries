@@ -10,6 +10,7 @@ import About from './components/About';
 import SpaceTyping from './components/SpaceTyping';
 import TypingMaze from './components/TypingMaze';
 import GamesPage from './components/GamesPage';
+import TypingEscapeRoom from './components/TypingEscapeRoom';
 
 function App() {
   return (
@@ -71,6 +72,14 @@ function App() {
           element={
             <ProtectedRoute>
               <GamesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/escape"
+          element={
+            <ProtectedRoute>
+              <TypingEscapeRoom />
             </ProtectedRoute>
           }
         />

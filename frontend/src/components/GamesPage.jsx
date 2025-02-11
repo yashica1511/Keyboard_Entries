@@ -15,10 +15,10 @@ const games = [
     route: "/maze",
   },
   {
-    name: "Word Race",
-    image: "/word-race-thumbnail.png",
-    description: "Defend your spaceship by typing the incoming words quickly!",
-    route: "/word-race",
+    name: "Typing Escape Room",
+    image: "/escape.png",
+    description: "Solve word puzzles to escape the room before time runs out!",
+    route: "/escape",
   }
 ];
 
