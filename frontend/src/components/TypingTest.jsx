@@ -223,8 +223,11 @@ const TypingTest = () => {
 
 
     return (
-        <div className="min-h-screen flex flex-col bg-blue-500 text-white">
-            <nav className="bg-blue-700 p-4">
+        <div className="min-h-screen flex flex-col bg-blue-500 text-white"
+        style={{
+            background: `url('/photo.jpeg') center/cover no-repeat, linear-gradient(to bottom right, #0a0f1e, #1b1f2a)`,
+        }}>
+            <nav className="bg-black bg-opacity-40 p-4">
                 <div className="container mx-auto flex justify-between items-center">
                     <Link to="/home" className="text-white text-xl font-bold">Back</Link>
                 </div>
@@ -235,7 +238,7 @@ const TypingTest = () => {
 
                     <div className="mb-4">
                         <select
-                            className="p-2 bg-blue-600 text-white rounded"
+                            className="p-2 bg-blue-800 text-white rounded"
                             value={selectedDuration}
                             onChange={(e) => setDuration(Number(e.target.value))}
                         >

@@ -10,113 +10,152 @@ const Home = () => {
     highestWPM: 0,
     recentActivity: [],
   });
+
   const navigate = useNavigate();
+
+  const fetchResults = () => {
+    axios
+      .get('http://localhost:5000/api/typing/fetch-results', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((response) => {
+        const results = response.data.results || [];
+
+        results.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+        const recentResults = results.slice(0, 3);
+        const processedResults = recentResults.map((result) => {
+          const date = new Date(result.createdAt).toISOString().split('T')[0];
+          return {
+            date,
+            activity: `Completed a typing test with ${result.wpm || 0} WPM and ${result.accuracy || 0}% accuracy`,
+          };
+        });
+
+        setUserStats({
+          testsCompleted: results.length,
+          avgWPM: results.length
+            ? results.reduce((acc, result) => acc + result.wpm, 0) / results.length
+            : 0,
+          highestWPM: Math.max(...results.map((result) => result.wpm), 0),
+          recentActivity: processedResults,
+        });
+      })
+      .catch((error) => {
+        console.error('Error fetching typing test results:', error);
+      });
+  };
 
   useEffect(() => {
     if (isLoggedIn) {
-      axios
-        .get('/api/user/stats')
-        .then((response) => {
-          const { testsCompleted, avgWPM, highestWPM, recentActivity } = response.data;
-          setUserStats({
-            testsCompleted,
-            avgWPM,
-            highestWPM,
-            recentActivity: recentActivity.slice(0, 2),
-          });
-        })
-        .catch((error) => {
-          console.error('Error fetching user stats:', error);
-        });
+      fetchResults();
     }
+
+    const interval = setInterval(() => {
+      fetchResults();
+    }, 5000);
+
+    return () => clearInterval(interval);
   }, [isLoggedIn]);
 
-  const handleLogout = async () => {
-    const token = localStorage.getItem('authToken');
-    try {
-      await fetch('http://localhost:5000/api/auth/logout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      localStorage.removeItem('authToken');
-      setIsLoggedIn(false);
-      navigate('/');
-    } catch (error) {
-      console.error('Error logging out:', error);
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-gradient-to-r from-blue-500 to-indigo-500 flex flex-col items-center justify-center text-white">
-      <header className="w-full px-4 py-6 sm:px-8 md:px-16 lg:px-24 flex justify-between items-center">
-        <div className="text-2xl font-bold">Typing Test</div>
-        <nav className="space-x-4">
+    <div
+      className="min-h-screen w-full flex flex-col items-center justify-center text-white relative"
+      style={{
+        background: `url('/photo.jpeg') center/cover no-repeat, linear-gradient(to bottom right, #0a0f1e, #1b1f2a)`,
+      }}
+    >
+      {/* Header */}
+      <header className="w-full px-6 py-5 flex justify-between items-center bg-black bg-opacity-40 backdrop-blur-md rounded-lg shadow-lg">
+        <div className="text-2xl font-bold text-white">Typing Test</div>
+        <nav className="flex space-x-4">
+          <button
+            className="px-4 py-2 bg-white text-gray-900 font-semibold rounded-lg shadow-md hover:bg-gray-200 transition-all"
+            onClick={() => navigate('/about')}
+          >
+            About
+          </button>
           {isLoggedIn ? (
             <button
-              className="px-4 py-2 bg-white text-blue-600 rounded-lg hover:bg-gray-200"
-              onClick={handleLogout}
+              className="px-4 py-2 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600 transition-all"
+              onClick={() => {
+                localStorage.removeItem('authToken');
+                setIsLoggedIn(false);
+                navigate('/');
+              }}
             >
               Logout
             </button>
           ) : (
             <>
-              <a href="/login" className="hidden sm:inline-block px-4 py-2 bg-white text-blue-600 rounded-lg hover:bg-gray-200">Login</a>
-              <a href="/register" className="hidden sm:inline-block px-4 py-2 bg-white text-blue-600 rounded-lg hover:bg-gray-200">Sign Up</a>
+              <a href="/login" className="px-4 py-2 bg-white text-gray-900 rounded-lg hover:bg-gray-200">Login</a>
+              <a href="/register" className="px-4 py-2 bg-white text-gray-900 rounded-lg hover:bg-gray-200">Sign Up</a>
             </>
           )}
         </nav>
       </header>
 
-      <main className="text-center flex flex-col items-center px-4 sm:px-8 md:px-16 lg:px-24">
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6">Enhance Your Typing Skills</h1>
-        <p className="text-lg sm:text-xl md:text-2xl mb-8">
+      <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6">Enhance Your Typing Skills</h1>
+        <p className="text-lg sm:text-xl md:text-2xl mb-2">
           {isLoggedIn ? `Welcome back! Ready to break your record?` : `Challenge yourself and improve your typing speed and accuracy with our interactive tests.`}
         </p>
-        <div className="space-y-4 sm:space-y-0 sm:space-x-4 flex flex-col sm:flex-row">
-          <a href="/typingtest" className="px-6 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-gray-200">Start Typing Test</a>
-          {isLoggedIn && (
-            <>
-              <a href="/practice" className="px-6 py-3 bg-transparent border border-white rounded-lg font-semibold hover:bg-white hover:text-blue-600">Practice Mode</a>
-              <a href="/multimode" className="px-6 py-3 bg-transparent border border-white rounded-lg font-semibold hover:bg-white hover:text-blue-600">Settings</a>
-            </>
-          )}
-        </div>
-      </main>
 
+      {/* Main Section */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-8 w-full px-6">
+        <button className="w-full px-6 py-3 bg-white text-gray-900 font-semibold rounded-lg shadow-lg hover:bg-gray-200 transition-all" onClick={() => navigate('/typingtest')}>
+          Start Typing Test
+        </button>
+        <button className="w-full px-6 py-3 bg-white text-gray-900 font-semibold rounded-lg shadow-lg hover:bg-gray-200 transition-all" onClick={() => navigate('/practice')}>
+          Practice Mode
+        </button>
+        <button className="w-full px-6 py-3 bg-white text-gray-900 font-semibold rounded-lg shadow-lg hover:bg-gray-200 transition-all" onClick={() => navigate('/extras')}>
+          Leaderboard & Achievements
+        </button>
+        <button className="w-full px-6 py-3 bg-white text-gray-900 font-semibold rounded-lg shadow-lg hover:bg-gray-200 transition-all" onClick={() => navigate('/multiplayer')}>
+          Multiplayer Race
+        </button>
+      </div>
+
+      {/* Stats Section */}
       {isLoggedIn && (
-        <section className="mt-16 px-4 sm:px-8 md:px-16 lg:px-24 text-left">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">Your Statistics</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-            <div className="bg-white bg-opacity-20 p-6 rounded-lg shadow-lg">
+        <div className="mt-10 w-full max-w-5xl">
+          <h2 className="text-3xl font-bold mb-4 text-center text-white">Your Statistics</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
+            <div className="p-6 bg-white text-gray-900 font-semibold rounded-lg shadow-lg">
               <h3 className="text-xl font-semibold mb-2">Tests Completed</h3>
-              <p className="text-2xl">{userStats.testsCompleted}</p>
+              <p className="text-3xl">{userStats.testsCompleted}</p>
             </div>
-            <div className="bg-white bg-opacity-20 p-6 rounded-lg shadow-lg">
+            <div className="p-6 bg-white text-gray-900 font-semibold rounded-lg shadow-lg">
               <h3 className="text-xl font-semibold mb-2">Average WPM</h3>
-              <p className="text-2xl">{userStats.avgWPM.toFixed(2)}</p>
+              <p className="text-3xl">{userStats.avgWPM.toFixed(2)}</p>
             </div>
-            <div className="bg-white bg-opacity-20 p-6 rounded-lg shadow-lg">
+            <div className="p-6 bg-white text-gray-900 font-semibold rounded-lg shadow-lg">
               <h3 className="text-xl font-semibold mb-2">Highest WPM</h3>
-              <p className="text-2xl">{userStats.highestWPM}</p>
+              <p className="text-3xl">{userStats.highestWPM}</p>
             </div>
           </div>
 
-          <h3 className="text-2xl font-bold mt-8">Recent Activity</h3>
-          <ul className="mt-4 space-y-2">
-            {userStats.recentActivity.map((activity, index) => (
-              <li key={index} className="bg-white bg-opacity-20 p-4 rounded-lg shadow-lg">
-                <p>{activity.date}: {activity.activity}</p>
-              </li>
-            ))}
+          {/* Recent Activity */}
+          <h3 className="text-2xl font-bold mt-10 text-center text-white">Recent Activity</h3>
+          <ul className="mt-4 space-y-4">
+            {userStats.recentActivity.length > 0 ? (
+              userStats.recentActivity.map((activity, index) => (
+                <li key={index} className="p-4 bg-white text-gray-900 font-semibold rounded-lg shadow-lg">
+                  <p>{activity.date}: {activity.activity}</p>
+                </li>
+              ))
+            ) : (
+              <p className="text-lg text-center text-gray-300">No recent activity.</p>
+            )}
           </ul>
-        </section>
+        </div>
       )}
 
-      <footer className="w-full px-4 py-6 sm:px-8 md:px-16 lg:px-24 mt-16 text-center text-sm">
-        <p>&copy; 2024 Typing Test. All rights reserved.</p>
+      <footer className="w-full px-6 py-5 mt-10 text-center text-sm bg-black bg-opacity-40 backdrop-blur-lg rounded-lg">
+        <p className="text-gray-300">&copy; 2024 Typing Test. All rights reserved.</p>
       </footer>
     </div>
   );

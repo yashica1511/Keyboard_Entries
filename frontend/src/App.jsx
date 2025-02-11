@@ -6,6 +6,10 @@ import Home from './components/Home';
 import ProtectedRoute from './components/ProtectedRoute';
 import TypingTest from './components/TypingTest';
 import TypingPractice from './components/TypingPractice';
+import About from './components/About';
+import SpaceTyping from './components/SpaceTyping';
+import TypingMaze from './components/TypingMaze';
+import GamesPage from './components/GamesPage';
 
 function App() {
   return (
@@ -35,6 +39,38 @@ function App() {
           element={
             <ProtectedRoute>
               <TypingPractice />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/about"
+          element={
+            <ProtectedRoute>
+              <About />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/space"
+          element={
+            <ProtectedRoute>
+              <SpaceTyping />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/maze"
+          element={
+            <ProtectedRoute>
+              <TypingMaze />
+            </ProtectedRoute>
+          }
+        />
+      <Route
+          path="/games"
+          element={
+            <ProtectedRoute>
+              <GamesPage />
             </ProtectedRoute>
           }
         />

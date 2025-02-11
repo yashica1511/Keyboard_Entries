@@ -18,4 +18,4 @@ app.use('/api/typing', typingTestRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
-})
+});
