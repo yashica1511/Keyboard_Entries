@@ -15,7 +15,7 @@ const Home = () => {
 
   const fetchResults = () => {
     axios
-      .get('http://localhost:5000/api/typing/fetch-results', {
+      .get('https://keyboard-typing-test-3.onrender.com/api/typing/fetch-results', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('authToken')}`,
           'Content-Type': 'application/json',

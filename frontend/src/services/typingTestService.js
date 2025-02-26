@@ -10,7 +10,7 @@ export const saveTypingTestResult = async (data) => {
 
         console.log('Saving typing test result:', data);
         
-        const response = await axios.post('http://localhost:5000/api/typing/save-result', data, {
+        const response = await axios.post('https://keyboard-typing-test-3.onrender.com/api/typing/save-result', data, {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ export const saveTypingTestResult = async (data) => {
 
 export const fetchTypingTestResults = async () => {
     try {
-        const response = await axios.get('http://localhost:5000/api/typing/fetch-results', {
+        const response = await axios.get('https://keyboard-typing-test-3.onrender.com/api/typing/fetch-results', {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
                 'Content-Type': 'application/json',
