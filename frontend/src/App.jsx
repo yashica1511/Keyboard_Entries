@@ -11,6 +11,7 @@ import SpaceTyping from './components/SpaceTyping';
 import TypingMaze from './components/TypingMaze';
 import GamesPage from './components/GamesPage';
 import TypingEscapeRoom from './components/TypingEscapeRoom';
+import Leaderboard from './components/Leaderboard';
 
 function App() {
   return (
@@ -80,6 +81,14 @@ function App() {
           element={
             <ProtectedRoute>
               <TypingEscapeRoom />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/leader"
+          element={
+            <ProtectedRoute>
+              <Leaderboard />
             </ProtectedRoute>
           }
         />

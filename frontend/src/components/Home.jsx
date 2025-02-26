@@ -104,18 +104,15 @@ const Home = () => {
         </p>
 
       {/* Main Section */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-8 w-full px-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8 w-full px-6">
         <button className="w-full px-6 py-3 bg-white text-gray-900 font-semibold rounded-lg shadow-lg hover:bg-gray-200 transition-all" onClick={() => navigate('/typingtest')}>
           Start Typing Test
         </button>
         <button className="w-full px-6 py-3 bg-white text-gray-900 font-semibold rounded-lg shadow-lg hover:bg-gray-200 transition-all" onClick={() => navigate('/practice')}>
           Practice Mode
         </button>
-        <button className="w-full px-6 py-3 bg-white text-gray-900 font-semibold rounded-lg shadow-lg hover:bg-gray-200 transition-all" onClick={() => navigate('/extras')}>
+        <button className="w-full px-6 py-3 bg-white text-gray-900 font-semibold rounded-lg shadow-lg hover:bg-gray-200 transition-all" onClick={() => navigate('/leader')}>
           Leaderboard & Achievements
-        </button>
-        <button className="w-full px-6 py-3 bg-white text-gray-900 font-semibold rounded-lg shadow-lg hover:bg-gray-200 transition-all" onClick={() => navigate('/multiplayer')}>
-          Multiplayer Race
         </button>
       </div>
 

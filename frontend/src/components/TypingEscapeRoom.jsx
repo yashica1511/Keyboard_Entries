@@ -3,14 +3,14 @@ import { useNavigate } from "react-router-dom";
 
 const wordPuzzles = [
     { clue: "A tool used to unlock doors", answers: ["key", "lockpick"] },
-    { clue: "The time between sunrise and sunset", answers: ["day", "daylight"] },
+    { clue: "The time between sunrise and sunset", answers: ["day", "daylight","afternoon"] },
     { clue: "An entrance to a room or building", answers: ["door", "gate"] },
     { clue: "An object with pages used for reading", answers: ["book", "novel"] },
     { clue: "A source of artificial light", answers: ["lamp", "bulb", "light"] },
     { clue: "A device used to write or draw", answers: ["pen", "pencil"] },
     { clue: "A place where students learn", answers: ["school", "classroom"] },
     { clue: "A large body of saltwater", answers: ["ocean", "sea"] },
-    { clue: "A soft object used for sleeping", answers: ["pillow", "cushion"] },
+    { clue: "A soft object used for sleeping", answers: ["pillow", "cushion","bed"] },
     { clue: "A four-legged pet that barks", answers: ["dog", "puppy"] },
     { clue: "A device used to tell time", answers: ["clock", "watch"] },
     { clue: "A food made from flour and baked", answers: ["bread", "bun"] },
@@ -22,8 +22,8 @@ const wordPuzzles = [
     { clue: "A place where you watch movies", answers: ["cinema", "theater"] },
     { clue: "A machine used to keep food cold", answers: ["fridge", "refrigerator"] },
     { clue: "A person who treats sick people", answers: ["doctor", "physician"] },
-    { clue: "A fruit that is red and often used in salads", answers: ["tomato", "fruit"] },
-    { clue: "An object used to cut paper", answers: ["scissors", "blade"] },
+    { clue: "A vegetable that is red and often used in salads", answers: ["tomato"] },
+    { clue: "An object used to cut paper", answers: ["scissors", "blade","scissor"] },
     { clue: "A pet that purrs and loves to nap", answers: ["cat", "kitten"] },
     { clue: "A person who writes books", answers: ["author", "writer"] },
     { clue: "A place where many animals live", answers: ["zoo", "sanctuary"] },
@@ -33,7 +33,7 @@ const wordPuzzles = [
     { clue: "A soft frozen dessert", answers: ["ice cream", "gelato"] },
     { clue: "A device used to talk to someone far away", answers: ["phone", "mobile"] },
     { clue: "A flying vehicle that travels in space", answers: ["rocket", "spaceship"] },
-    { clue: "A plant that gives us oxygen", answers: ["tree", "plant"] }
+    { clue: "Gives us oxygen", answers: ["tree", "plant"] }
   ];
   
 

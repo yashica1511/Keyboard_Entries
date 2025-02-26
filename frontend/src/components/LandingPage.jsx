@@ -49,7 +49,7 @@ const LandingPage = () => {
                         </div>
                         <div className="bg-white text-gray-900 font-semibold p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 hover:shadow-2xl duration-300 ease-in-out">
                             <h3 className="text-xl font-semibold mb-4">Multiplayer Mode</h3>
-                            <p className="text-base">Compete with friends or other users in real-time typing races.</p>
+                            <p className="text-base">Enjoy fun typing games to challenge your speed and accuracy while having fun.</p>
                         </div>
                     </div>
                 </section>
