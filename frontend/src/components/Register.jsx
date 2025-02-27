@@ -11,6 +11,8 @@ const Register = () => {
     const [errors, setErrors] = useState({});
     const [successMessage, setSuccessMessage] = useState('');
     const navigate = useNavigate();
+    const API_URL = import.meta.env.VITE_BACKEND_URL;
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -32,7 +34,7 @@ const Register = () => {
         const validationErrors = validate();
         if (Object.keys(validationErrors).length === 0) {
             try {
-                const response = await fetch('https://keyboard-typing-test-3.onrender.com/api/auth/register', {
+                const response = await fetch(`${API_URL}/api/auth/register`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData),

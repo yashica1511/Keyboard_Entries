@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
+    const API_URL = import.meta.env.VITE_BACKEND_URL;
+
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -31,7 +33,7 @@ const Login = () => {
             const { email, password } = formData;
             const usernameOrEmail = email;
             try {
-                const response = await fetch('https://keyboard-typing-test-3.onrender.com/api/auth/login', {
+                const response = await fetch(`${API_URL}/api/auth/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ usernameOrEmail, password }),

@@ -10,12 +10,14 @@ const Home = () => {
     highestWPM: 0,
     recentActivity: [],
   });
+  const API_URL = import.meta.env.VITE_BACKEND_URL;
+
 
   const navigate = useNavigate();
 
   const fetchResults = () => {
     axios
-      .get('https://keyboard-typing-test-3.onrender.com/api/typing/fetch-results', {
+      .get(`${API_URL}/api/typing/fetch-results`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('authToken')}`,
           'Content-Type': 'application/json',
