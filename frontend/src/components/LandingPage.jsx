@@ -25,15 +25,15 @@ const LandingPage = () => {
 
               {/* Main Section */}
               <main className="text-center flex flex-col items-center px-6">
-                  <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6 mt-6">
+                  <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6 mt-20">
                       Enhance Your Typing Skills
                   </h1>
-                  <p className="text-lg sm:text-xl md:text-2xl mb-8">
+                  <p className="text-lg sm:text-xl md:text-2xl mb-4">
                       Challenge yourself and improve your typing speed and accuracy with our interactive tests.
                   </p>
               </main>
 
-              <section id="features" className="mt-16 px-4 sm:px-8 md:px-16 lg:px-24">
+              <section id="features" className="mt-12 px-4 sm:px-8 md:px-16 lg:px-24">
                     <h2 className="text-3xl sm:text-4xl font-bold mb-8 text-white text-center">
                         Features
                     </h2>

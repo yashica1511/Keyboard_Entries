@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Link } from "react-router-dom";
 
 const Leaderboard = () => {
+  const API_URL = import.meta.env.VITE_BACKEND_URL;
   const [leaderboard, setLeaderboard] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ const Leaderboard = () => {
     }
 
     axios
-      .get('http://localhost:5000/api/typing/leaderboard', {
+      .get(`${API_URL}/api/typing/leaderboard`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {

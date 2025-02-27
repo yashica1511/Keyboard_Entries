@@ -148,31 +148,32 @@ const TypingPractice = () => {
   const [mode, setMode] = useState("practice");
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-cover bg-center text-white relative" style={{ backgroundImage: "url('/sky.jpg')" }}>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-cover bg-center text-white relative px-4 sm:px-6" style={{ backgroundImage: "url('/sky.jpg')" }}>
       {/* Navbar */}
-      <nav className="absolute top-0 left-0 w-full px-6 py-4 bg-black bg-opacity-50 backdrop-blur-md shadow-lg flex justify-between items-center">
-        <Link to="/home" className="text-white text-xl font-bold">Back</Link>
+      <nav className="absolute top-0 left-0 w-full px-4 sm:px-6 py-3 sm:py-4 bg-black bg-opacity-50 backdrop-blur-md shadow-lg flex justify-between items-center">
+        <Link to="/home" className="text-white text-lg sm:text-xl font-bold">Back</Link>
         <button
-          className="px-6 py-2 bg-white text-gray-900 font-semibold rounded-lg shadow-md hover:bg-gray-200 transition-all"
+          className="px-4 sm:px-6 py-2 bg-white text-gray-900 font-semibold rounded-lg shadow-md hover:bg-gray-200 transition-all"
           onClick={() => navigate('/games')}
         >
           Games
         </button>
       </nav>
-
+  
       {/* Main Content */}
-      <div className="pt-20 w-full max-w-6xl px-6 grid grid-cols-2 gap-6 items-start bg-black bg-opacity-60 rounded-lg shadow-2xl p-10">
+      <div className="pt-20 w-full max-w-6xl px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-2 gap-6 items-start bg-black bg-opacity-60 rounded-lg shadow-2xl p-6 sm:p-10">
+        
         {/* Column 1: Typing Practice */}
-        <div className="flex flex-col items-center">
-          <h2 className="text-5xl font-extrabold mb-6 text-white drop-shadow-xl text-center">Typing Practice</h2>
-          <p className="text-lg mb-6 text-gray-300 text-center">Improve your typing speed and accuracy with fun challenges!</p>
-
+        <div className="flex flex-col items-center w-full">
+          <h2 className="text-4xl sm:text-5xl font-extrabold mb-4 sm:mb-6 text-white drop-shadow-xl text-center">Typing Practice</h2>
+          <p className="text-md sm:text-lg mb-4 sm:mb-6 text-gray-300 text-center">Improve your typing speed and accuracy with fun challenges!</p>
+  
           {/* Difficulty Selector */}
-          <div className="flex gap-6 mb-8">
+          <div className="flex flex-wrap justify-center gap-4 mb-6 sm:mb-8">
             {['easy', 'medium', 'hard'].map((level) => (
               <button
                 key={level}
-                className={`px-6 py-3 rounded-full font-semibold text-lg shadow-lg transition-all duration-300 ${
+                className={`px-5 sm:px-6 py-2 sm:py-3 rounded-full font-semibold text-md sm:text-lg shadow-lg transition-all duration-300 ${
                   difficulty === level
                     ? 'bg-white text-blue-600'
                     : 'bg-blue-700 text-white hover:bg-blue-600'
@@ -183,56 +184,61 @@ const TypingPractice = () => {
               </button>
             ))}
           </div>
-
+  
           {/* Typing Word */}
-          <p className="text-4xl mt-6 font-mono bg-white text-blue-700 px-8 py-5 rounded-xl shadow-2xl tracking-wide animate-pulse">
+          <p className="text-3xl sm:text-4xl mt-4 sm:mt-6 font-mono bg-white text-blue-700 px-6 sm:px-8 py-4 sm:py-5 rounded-xl shadow-2xl tracking-wide animate-pulse text-center w-full max-w-md">
             {word}
           </p>
-
+  
           {/* Input Field */}
-          <div className="mt-6">
-          {!timerStarted ? (
-            <button onClick={startTimer} className="px-6 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-gray-200">
-              Start Timer
-            </button>
-          ) : (
-            <button onClick={resetPractice} className="px-6 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-gray-200">
-              Reset Practice
-            </button>
-          )}
+          <div className="mt-6 sm:mt-8 flex flex-col items-center w-full">
+            {!timerStarted ? (
+              <button onClick={startTimer} className="px-5 sm:px-6 py-2 sm:py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-gray-200">
+                Start Timer
+              </button>
+            ) : (
+              <button onClick={resetPractice} className="px-5 sm:px-6 py-2 sm:py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-gray-200">
+                Reset Practice
+              </button>
+            )}
+  
+            <input
+              type="text"
+              value={typedWord}
+              onChange={handleInputChange}
+              onKeyPress={handleKeyPress}
+              className="mt-4 sm:mt-6 px-5 sm:px-6 py-2 sm:py-3 text-lg font-mono rounded-lg text-blue-700 bg-gray-100 focus:outline-none shadow-lg w-full max-w-md text-center"
+              placeholder="Start typing..."
+              autoFocus={timerStarted}
+              disabled={!timerStarted}
+            />
+          </div>
         </div>
-
-          <input
-            type="text"
-            value={typedWord}
-            onChange={handleInputChange}
-            onKeyPress={handleKeyPress}
-            className="mt-6 px-6 py-3 text-lg font-mono rounded-lg text-blue-700 bg-gray-100 focus:outline-none shadow-lg w-3/4 max-w-md text-center"
-            placeholder="Start typing..."
-            autoFocus={timerStarted}
-            disabled={!timerStarted}
-          />
-        </div>
-
+  
         {/* Column 2: Score & Typed Words */}
-        <div className="flex flex-col items-center bg-white text-blue-700 p-6 rounded-lg shadow-lg">
-          <h3 className="text-3xl font-bold mb-4">Typed Results</h3>
-          <div className="mb-4 text-2xl">Time Left: {timeLeft}s</div>
-          <div className="text-2xl font-semibold mb-2">🏆 Score: <span className="font-bold">{score}</span></div>
-          <div className="flex flex-wrap gap-2 mt-4 w-full">
+        <div className="flex flex-col items-center bg-white text-blue-700 p-4 sm:p-6 rounded-lg shadow-lg w-full">
+          <h3 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4">Typed Results</h3>
+          <div className="mb-2 sm:mb-4 text-lg sm:text-2xl">Time Left: {timeLeft}s</div>
+          <div className="text-lg sm:text-2xl font-semibold mb-2">🏆 Score: <span className="font-bold">{score}</span></div>
+          
+          <div className="flex flex-wrap gap-2 mt-3 sm:mt-4 w-full justify-center">
             {typedWords.length > 0 ? (
               typedWords.map((typed, index) => (
-                <span key={index} className={`px-3 py-2 rounded-lg font-semibold text-sm ${correctWords.includes(typed) ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}>{typed}</span>
+                <span key={index} className={`px-3 py-2 rounded-lg font-semibold text-sm ${
+                  correctWords.includes(typed) ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+                }`}>
+                  {typed}
+                </span>
               ))
             ) : (
-              <p className="text-gray-500 text-lg">No words typed yet.</p>
+              <p className="text-gray-500 text-md sm:text-lg">No words typed yet.</p>
             )}
           </div>
         </div>
       </div>
     </div>
-
   );
+  
 };
 
 export default TypingPractice;
